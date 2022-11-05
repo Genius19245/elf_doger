@@ -45,7 +45,6 @@ class Elf extends SpriteComponent with KeyboardHandler, CollisionCallbacks {
       Set<Vector2> intersectionPoints, PositionComponent other) {
     // TODO: implement onCollisionStart
     super.onCollisionStart(intersectionPoints, other);
-    if (other is Stone && isColliding || other is Stone1 && isColliding) {
-    }
+    if (other is Stone && isColliding || other is Stone1 && isColliding) {}
   }
 }

@@ -3,9 +3,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(GameWidget(
-    game: MyGame(),
-  ));
+  runApp(GameWidget(game: MyGame()));
 }
 
 class MyApp extends StatelessWidget {
@@ -20,15 +18,19 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Elf Dodger'),
-        ),
-        body: Stack(
+        body: Column(
           children: [
-            GameWidget(
-              mouseCursor: SystemMouseCursors.move,
-              game: MyGame(),
-            ),
+            const Text('WelCome To The Elf dodger'),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => GameWidget(
+                                game: MyGame(),
+                              )));
+                },
+                child: const Text('Click To Play Game')),
           ],
         ),
       ),

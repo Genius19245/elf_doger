@@ -25,7 +25,7 @@ class MyGame extends FlameGame
   Future<void> onLoad() async {
     super.onLoad();
     add(SpriteComponent()
-      ..sprite = await loadSprite('road.png')
+      ..sprite = await loadSprite('back.jpeg')
       ..size = size);
     add(Elf(
       sprite: await loadSprite('elf.png'),
