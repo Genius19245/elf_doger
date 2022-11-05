@@ -2,10 +2,13 @@ import 'dart:math';
 import 'package:elf_doger/components/gift.dart';
 import 'package:elf_doger/components/stone.dart';
 import 'package:elf_doger/components/stone1.dart';
+import 'package:elf_doger/components/utils/audio_manager.dart';
 import 'package:elf_doger/model/player_data.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flame_audio/flame_audio.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'elf.dart';
 
 class MyGame extends FlameGame
@@ -23,6 +26,8 @@ class MyGame extends FlameGame
 
   @override
   Future<void> onLoad() async {
+    AudioManager.init();
+    AudioManager.playBgm('synth.wav');
     super.onLoad();
     add(SpriteComponent()
       ..sprite = await loadSprite('back.jpeg')

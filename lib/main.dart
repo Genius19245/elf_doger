@@ -1,9 +1,13 @@
 import 'package:elf_doger/components/game.dart';
+import 'package:elf_doger/screens/splashScreen.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(GameWidget(game: MyGame()));
+  runApp(const MaterialApp(
+    themeMode: ThemeMode.dark,
+    home: SplashScreen(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -18,20 +22,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-        body: Column(
-          children: [
-            const Text('WelCome To The Elf dodger'),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => GameWidget(
-                                game: MyGame(),
-                              )));
-                },
-                child: const Text('Click To Play Game')),
-          ],
+        body: GameWidget(
+          game: MyGame(),
         ),
       ),
     );
