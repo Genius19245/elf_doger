@@ -1,18 +1,15 @@
 import 'dart:math';
-
-import 'package:flame/collisions.dart';
+import 'package:elf_doger/components/gift.dart';
+import 'package:elf_doger/components/stone.dart';
+import 'package:elf_doger/components/stone1.dart';
+import 'package:elf_doger/model/player_data.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 import 'elf.dart';
 
 class MyGame extends FlameGame
-    with HasKeyboardHandlerComponents, HasCollisionDetection, PanDetector {
-  Offset? _pointerStarterPosition;
+    with HasKeyboardHandlerComponents, HasCollisionDetection, HasGameRef {
   late Elf elf;
   // variables
   double y = 150;
@@ -22,6 +19,7 @@ class MyGame extends FlameGame
   SpriteComponent stone1 = SpriteComponent();
   TextComponent score = TextComponent();
   final Random random = Random();
+  final playerData = PlayerData();
 
   @override
   Future<void> onLoad() async {
@@ -29,73 +27,33 @@ class MyGame extends FlameGame
     add(SpriteComponent()
       ..sprite = await loadSprite('road.png')
       ..size = size);
+    add(Elf(
+      sprite: await loadSprite('elf.png'),
+      position: Vector2(300, 300),
+      size: Vector2(150.5, 150.5),
+    ));
 
     elf = Elf();
     //
-    // add(gift
-    //   ..sprite = await loadSprite('gift.png')
-    //   ..x = 600
-    //   ..y = 150
-    //   ..size = Vector2(150, 150));
-    add(Stone(await loadSprite('stone.png')));
-    add(Stone1(await loadSprite('stone.png')));
-    add(Elf(
-      sprite: await loadSprite('elf.png'),
-      position: Vector2(300, 150),
-      size: Vector2(100.5, 100.5),
-    ));
+    add(Gift(await loadSprite('gift.png')));
+    add(Stone(await loadSprite('stone.png'), playerData.score.value));
+    add(
+      Stone1(await loadSprite('stone.png')),
+    );
+    add(score
+      ..size = Vector2(75.5, 75.5)
+      ..position = Vector2(15, 26)
+      ..text = 'Score: ${playerData.score.value}');
+    playerData.score.addListener(() {
+      score.text = 'Score: ${playerData.score.value}';
+    });
   }
 
   @override
   void update(dt) {
     super.update(dt);
+
+    score.text = 'Score: ${playerData.score.value}';
     // for score component
-  }
-}
-
-class Stone extends SpriteComponent with CollisionCallbacks {
-  final Random random = Random();
-
-  Stone(Sprite sprite) {
-    this.sprite = sprite;
-    debugMode = true;
-    size = Vector2(100, 100);
-    position = Vector2(300, 0);
-  }
-  @override
-  @override
-  void update(double dt) {
-    // TODO: implement update
-    super.update(dt);
-    y += 1.2;
-
-    if (y > 680) {
-      y = 0;
-      x = random.nextInt(703) + 330 as double;
-    }
-  }
-}
-
-class Stone1 extends SpriteComponent with CollisionCallbacks {
-  final Random random = Random();
-
-  Stone1(Sprite sprite) {
-    this.sprite = sprite;
-    debugMode = true;
-    size = Vector2(150, 150);
-    position = Vector2(270, 0);
-    x = 300;
-  }
-  @override
-  @override
-  void update(double dt) {
-    // TODO: implement update
-    super.update(dt);
-    y += 1.5;
-
-    if (y > 680) {
-      y = 0;
-      x = random.nextInt(703) + 230 as double;
-    }
   }
 }
