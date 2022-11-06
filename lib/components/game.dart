@@ -27,7 +27,7 @@ class MyGame extends FlameGame
   @override
   Future<void> onLoad() async {
     AudioManager.init();
-    AudioManager.playBgm('synth.wav');
+    AudioManager.playBgm('synth.wav', 'never_still.wav');
     super.onLoad();
     add(SpriteComponent()
       ..sprite = await loadSprite('back.jpeg')

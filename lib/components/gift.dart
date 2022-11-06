@@ -5,6 +5,7 @@ import 'package:flame/components.dart';
 
 import 'elf.dart';
 import 'game.dart';
+import 'utils/audio_manager.dart';
 
 class Gift extends SpriteComponent with CollisionCallbacks, HasGameRef<MyGame> {
   final Random random = Random();
@@ -36,6 +37,7 @@ class Gift extends SpriteComponent with CollisionCallbacks, HasGameRef<MyGame> {
       x = random.nextInt(703) + 230 as double;
       y = -200;
       gameRef.playerData.score.value += 1;
+      AudioManager.playSfx('coin.wav');
     }
   }
 }

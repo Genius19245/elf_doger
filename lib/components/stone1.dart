@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:elf_doger/components/game.dart';
+import 'package:elf_doger/components/utils/audio_manager.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
@@ -39,6 +40,7 @@ class Stone1 extends SpriteComponent
       x = random.nextInt(703) + 0 as double;
       y = -100;
       gameRef.playerData.score.value -= 1;
+      AudioManager.playSfx('hit.wav');
     }
   }
 }
