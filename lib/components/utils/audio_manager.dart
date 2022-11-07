@@ -33,3 +33,5 @@ class AudioManager {
     }
   }
 }
+
+// synth.wav and neverstill.wav is best

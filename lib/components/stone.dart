@@ -40,7 +40,9 @@ class Stone extends SpriteComponent
     if (other is Elf) {
       x = random.nextInt(703) + 330 as double;
       y = -200;
-      gameRef.playerData.score.value -= 1;
+      if (gameRef.playerData.score.value > 0) {
+        gameRef.playerData.score.value -= 1;
+      }
       AudioManager.playSfx('hit.wav');
     }
   }
