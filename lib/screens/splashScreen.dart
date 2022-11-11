@@ -1,4 +1,4 @@
-import 'package:elf_doger/main.dart';
+import 'package:animated_button/animated_button.dart';
 import 'package:elf_doger/screens/game_play.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +21,11 @@ class SplashScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Image.asset(
+                  'assets/images/elf.png',
+                  width: 200,
+                  height: 200,
+                ),
                 Text(
                   'Elf Dodger',
                   style: Theme.of(context).textTheme.bodyText1?.copyWith(
@@ -38,13 +43,23 @@ class SplashScreen extends StatelessWidget {
                 const SizedBox(
                   height: 50,
                 ),
-                ElevatedButton(
+                AnimatedButton(
+                  shadowDegree: ShadowDegree.light,
+                  color: Colors.red,
+                  height: 150,
+                  width: 200,
+                  enabled: true,
+                  duration: 70,
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (_) => const GamePlay()));
+                        MaterialPageRoute(builder: (_) => GamePlay()));
                   },
                   child: const Text(
                     'Play',
+                    style: TextStyle(
+                      fontSize: 50,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 const SizedBox(

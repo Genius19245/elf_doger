@@ -22,8 +22,11 @@ class Elf extends SpriteComponent with KeyboardHandler, CollisionCallbacks {
   void update(double dt) {
     _velocity.x = _haxisInput * _speed;
     position += _velocity * dt;
-    if (x > 1000) {
-      x -= _velocity.x;
+    if (x > 1200) {
+      x = -1;
+    }
+    if (x < -1) {
+      x = 1200;
     }
 
     super.update(dt);

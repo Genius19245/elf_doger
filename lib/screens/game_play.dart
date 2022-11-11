@@ -10,6 +10,12 @@ class GamePlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GameWidget(game: _myGame);
+    return FittedBox(
+      child: SizedBox(
+        width: 1280,
+        height: 720,
+        child: GameWidget(game: _myGame),
+      ),
+    );
   }
 }

@@ -8,15 +8,12 @@ class AudioManager {
   static void init() async {
     FlameAudio.bgm.initialize();
     await FlameAudio.audioCache.loadAll([
-      'electric_movements.wav',
-      'zapping_through_the_finish.wav',
-      'synth.wav',
-      'energizer_cult.wav',
-      'never_still.wav',
-      'pow_pow_lazer.wav',
-      'sirens_before_the_drop.wav',
-      'hit.wav',
-      'synth.wav',
+      'electric_movements.mp3',
+      'zapping_through_the_finish.mp3',
+      'energizer_cult.mp3',
+      'never_still.mp3',
+      'hit.mp3',
+      'synth.mp3',
     ]);
   }
 

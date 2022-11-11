@@ -25,7 +25,7 @@ class Stone extends SpriteComponent
     // TODO: implement update
     super.update(dt);
 
-    y += 5.7;
+    y += 7.7;
 
     if (y > 680) {
       y = 0;
@@ -43,7 +43,9 @@ class Stone extends SpriteComponent
       if (gameRef.playerData.score.value > 0) {
         gameRef.playerData.score.value -= 1;
       }
-      AudioManager.playSfx('hit.wav');
+      gameRef.playerData.size.value -= 10;
+
+      AudioManager.playSfx('hit.mp3');
     }
   }
 }

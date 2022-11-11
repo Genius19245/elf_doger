@@ -25,15 +25,15 @@ class MyGame extends FlameGame
   @override
   Future<void> onLoad() async {
     AudioManager.init();
-    AudioManager.playBgm('synth.wav', 'never_still.wav');
+    AudioManager.playBgm('synth.mp3', 'never_still.mp3');
     super.onLoad();
     add(SpriteComponent()
       ..sprite = await loadSprite('back.jpeg')
       ..size = size);
     add(Elf(
       sprite: await loadSprite('elf.png'),
-      position: Vector2(300, 300),
-      size: Vector2(150.5, 150.5),
+      position: Vector2(300, 500),
+      size: Vector2(125, 125),
     ));
 
     elf = Elf();
@@ -55,7 +55,7 @@ class MyGame extends FlameGame
   @override
   void update(dt) {
     super.update(dt);
-
+    elf.size = Vector2(playerData.size.value, playerData.size.value);
     score.text = 'Score: ${playerData.score.value}';
     // for score component
   }

@@ -21,7 +21,7 @@ class Gift extends SpriteComponent with CollisionCallbacks, HasGameRef<MyGame> {
   void update(double dt) {
     // TODO: implement update
     super.update(dt);
-    y += 3.5;
+    y += 4.5;
 
     if (y > 680) {
       y = 0;
@@ -36,8 +36,9 @@ class Gift extends SpriteComponent with CollisionCallbacks, HasGameRef<MyGame> {
     if (other is Elf) {
       x = random.nextInt(703) + 230 as double;
       y = -200;
+      gameRef.playerData.size.value += 1000;
       gameRef.playerData.score.value += 1;
-      AudioManager.playSfx('coin.wav');
+      AudioManager.playSfx('coin.mp3');
     }
   }
 }
