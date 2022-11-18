@@ -6,21 +6,35 @@ import 'package:elf_doger/components/utils/audio_manager.dart';
 import 'package:elf_doger/model/player_data.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
 import 'elf.dart';
 
 class MyGame extends FlameGame
-    with HasKeyboardHandlerComponents, HasCollisionDetection, HasGameRef {
+    with
+        HasKeyboardHandlerComponents,
+        HasCollisionDetection,
+        HasGameRef,
+        HasTappableComponents {
   late Elf elf;
+
   // variables
   double y = 150;
+
   // players
   SpriteComponent player = SpriteComponent();
   SpriteComponent gift = SpriteComponent();
   SpriteComponent stone1 = SpriteComponent();
   TextComponent score = TextComponent();
+  TextComponent healthText = TextComponent();
+
   final Random random = Random();
+
+  // Left left = Left();
+  // Right right = Right();
+
   final playerData = PlayerData();
+  final Vector2 buttonSize = Vector2(50.0, 50.0);
 
   @override
   Future<void> onLoad() async {
@@ -50,13 +64,24 @@ class MyGame extends FlameGame
     playerData.score.addListener(() {
       score.text = 'Score: ${playerData.score.value}';
     });
+    add(healthText
+      ..size = Vector2(75.5, 75.5)
+      ..position = Vector2(1000, 10)
+      ..text = 'Health: ${playerData.health.value}');
+    playerData.health.addListener(() {
+      healthText.text = 'Health: ${playerData.health.value}';
+    });
   }
 
   @override
   void update(dt) {
     super.update(dt);
     elf.size = Vector2(playerData.size.value, playerData.size.value);
-    score.text = 'Score: ${playerData.score.value}';
+    healthText.text = 'Health: ${playerData.health.value}';
+    if (playerData.health.value == 0) {
+      gameRef.pauseEngineFn;
+    }
+
     // for score component
   }
 }

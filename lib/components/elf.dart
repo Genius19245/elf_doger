@@ -1,10 +1,12 @@
+import 'package:elf_doger/components/game.dart';
 import 'package:elf_doger/components/stone.dart';
 import 'package:elf_doger/components/stone1.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 
-class Elf extends SpriteComponent with KeyboardHandler, CollisionCallbacks {
+class Elf extends SpriteComponent
+    with KeyboardHandler, CollisionCallbacks, HasGameRef<MyGame> {
   int _haxisInput = 0;
   final double _speed = 300;
   final Vector2 _velocity = Vector2.zero();
@@ -41,8 +43,8 @@ class Elf extends SpriteComponent with KeyboardHandler, CollisionCallbacks {
   @override
   bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     _haxisInput = 0;
-    _haxisInput += keysPressed.contains(LogicalKeyboardKey.arrowLeft) ? -1 : 0;
-    _haxisInput += keysPressed.contains(LogicalKeyboardKey.arrowRight) ? 1 : 0;
+    _haxisInput += keysPressed.contains(LogicalKeyboardKey.arrowLeft) ? -2 : 0;
+    _haxisInput += keysPressed.contains(LogicalKeyboardKey.arrowRight) ? 2 : 0;
     return true;
   }
 

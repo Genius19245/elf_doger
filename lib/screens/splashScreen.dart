@@ -52,7 +52,7 @@ class SplashScreen extends StatelessWidget {
                   duration: 70,
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (_) => GamePlay()));
+                        MaterialPageRoute(builder: (_) => const GamePlay()));
                   },
                   child: const Text(
                     'Play',

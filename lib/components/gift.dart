@@ -9,6 +9,7 @@ import 'utils/audio_manager.dart';
 
 class Gift extends SpriteComponent with CollisionCallbacks, HasGameRef<MyGame> {
   final Random random = Random();
+
   Gift(Sprite? sprite) {
     this.sprite = sprite;
     debugMode = true;
@@ -17,11 +18,12 @@ class Gift extends SpriteComponent with CollisionCallbacks, HasGameRef<MyGame> {
     x = 100;
     add(RectangleHitbox());
   }
+
   @override
   void update(double dt) {
     // TODO: implement update
     super.update(dt);
-    y += 4.5;
+    y += 8.5;
 
     if (y > 680) {
       y = 0;

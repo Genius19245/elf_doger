@@ -37,6 +37,8 @@ class Stone1 extends SpriteComponent
     // TODO: implement onCollision
     super.onCollision(intersectionPoints, other);
     if (other is Elf) {
+      gameRef.playerData.health.value -= 1;
+
       x = random.nextInt(703) + 0 as double;
       y = -100;
       if (gameRef.playerData.score.value > 0) {
