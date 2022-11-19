@@ -27,6 +27,7 @@ class MyGame extends FlameGame
   SpriteComponent stone1 = SpriteComponent();
   TextComponent score = TextComponent();
   TextComponent healthText = TextComponent();
+  TextComponent tap = TextComponent();
 
   final Random random = Random();
 
@@ -71,6 +72,14 @@ class MyGame extends FlameGame
     playerData.health.addListener(() {
       healthText.text = 'Health: ${playerData.health.value}';
     });
+    add(tap
+      ..size = Vector2(75.5, 75.5)
+      ..position = Vector2(500, 500)
+      ..text = 'tap: ${playerData.mobile.value}');
+    playerData.mobile.addListener(() {
+      tap.text = 'tap: ${playerData.mobile.value}';
+      print(playerData.mobile.value.toString());
+    });
   }
 
   @override
@@ -78,6 +87,7 @@ class MyGame extends FlameGame
     super.update(dt);
     elf.size = Vector2(playerData.size.value, playerData.size.value);
     healthText.text = 'Health: ${playerData.health.value}';
+    tap.text = 'Health: ${playerData.mobile.value}';
     if (playerData.health.value == 0) {
       gameRef.pauseEngineFn;
     }

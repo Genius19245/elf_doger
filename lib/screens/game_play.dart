@@ -1,7 +1,5 @@
-import 'package:elf_doger/components/menu_Overlays.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../components/game.dart';
 
@@ -13,12 +11,33 @@ class GamePlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FittedBox(
-      child: SizedBox(
-        width: 1280,
-        height: 720,
-        child: GameWidget(
-          game: myGame,
+    return Scaffold(
+      persistentFooterButtons: [
+        IconButton(
+          onPressed: () {
+            myGame.playerData.mobile.value += 10;
+          },
+          icon: Icon(
+            Icons.arrow_left,
+            size: 50,
+          ),
+        ),
+        IconButton(
+            onPressed: () {
+              myGame.playerData.mobile.value += -10;
+            },
+            icon: Icon(
+              Icons.arrow_right,
+              size: 50,
+            )),
+      ],
+      body: FittedBox(
+        child: SizedBox(
+          width: 1280,
+          height: 720,
+          child: GameWidget(
+            game: myGame,
+          ),
         ),
       ),
     );

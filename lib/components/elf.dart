@@ -30,6 +30,12 @@ class Elf extends SpriteComponent
     if (x < -1) {
       x = 1200;
     }
+    if (gameRef.playerData.mobile.value > 0) {
+      x += 10;
+    }
+    if (gameRef.playerData.mobile.value < 0) {
+      x -= 10;
+    }
 
     super.update(dt);
   }
@@ -56,3 +62,4 @@ class Elf extends SpriteComponent
     if (other is Stone && isColliding || other is Stone1 && isColliding) {}
   }
 }
+// this is the game character,

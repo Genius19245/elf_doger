@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:elf_doger/components/game.dart';
 import 'package:elf_doger/components/utils/audio_manager.dart';
 import 'package:flame/collisions.dart';
