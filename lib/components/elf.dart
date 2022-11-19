@@ -1,65 +1,61 @@
 import 'package:elf_doger/components/game.dart';
-import 'package:elf_doger/components/stone.dart';
-import 'package:elf_doger/components/stone1.dart';
+import 'package:elf_doger/utils/audio_manager.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 
-class Elf extends SpriteComponent
-    with KeyboardHandler, CollisionCallbacks, HasGameRef<MyGame> {
-  int _haxisInput = 0;
-  final double _speed = 300;
-  final Vector2 _velocity = Vector2.zero();
-
-  Elf({Sprite? sprite, Vector2? position, Vector2? size, double? x, double? y})
-      : super(
-          position: position,
-          sprite: sprite,
-          size: size,
-        ) {
+class Elf extends SpriteComponent //
+    with
+        KeyboardHandler,
+        CollisionCallbacks,
+        HasGameRef<MyGame> {
+  Elf({super.sprite}) {
+    debugMode = true;
+    size = Vector2(69.0, 128.0);
+    anchor = Anchor.center;
     add(RectangleHitbox());
+  }
+
+  final Vector2 _velocity = Vector2.zero();
+  late final double _speed;
+  double xAxisInput = 0.0;
+
+  @override
+  Future<void>? onLoad() async {
+    super.onLoad();
+    position = gameRef.size / 2;
+    _speed = gameRef.size.x / 4;
   }
 
   @override
   void update(double dt) {
-    _velocity.x = _haxisInput * _speed;
-    position += _velocity * dt;
-    if (x > 1200) {
-      x = -1;
-    }
-    if (x < -1) {
-      x = 1200;
-    }
-    if (gameRef.playerData.mobile.value > 0) {
-      x += 10;
-    }
-    if (gameRef.playerData.mobile.value < 0) {
-      x -= 10;
-    }
-
     super.update(dt);
-  }
-
-  @override
-  Future<void>? add(Component component) {
-    // TODO: implement add
-    return super.add(RectangleHitbox());
+    _velocity.x = xAxisInput * _speed;
+    position += _velocity * dt;
+    if (x < 0.0) {
+      x = gameRef.size.x;
+    } else if (x > gameRef.size.x) {
+      x = 0;
+    }
   }
 
   @override
   bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-    _haxisInput = 0;
-    _haxisInput += keysPressed.contains(LogicalKeyboardKey.arrowLeft) ? -2 : 0;
-    _haxisInput += keysPressed.contains(LogicalKeyboardKey.arrowRight) ? 2 : 0;
+    xAxisInput = 0.0;
+    if (keysPressed.contains(LogicalKeyboardKey.arrowLeft)) {
+      xAxisInput += -2.0;
+    }
+    if (keysPressed.contains(LogicalKeyboardKey.arrowRight)) {
+      xAxisInput += 2.0;
+    }
     return true;
   }
 
-  @override
-  void onCollisionStart(
-      Set<Vector2> intersectionPoints, PositionComponent other) {
-    // TODO: implement onCollisionStart
-    super.onCollisionStart(intersectionPoints, other);
-    if (other is Stone && isColliding || other is Stone1 && isColliding) {}
+  void hitByStone() {
+    gameRef.health.value--;
+    if (gameRef.score.value > 0) {
+      gameRef.score.value--;
+    }
+    AudioManager.playSfx('hit.mp3');
   }
 }
-// this is the game character,

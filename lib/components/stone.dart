@@ -1,50 +1,70 @@
 import 'dart:math';
+
 import 'package:elf_doger/components/game.dart';
-import 'package:elf_doger/components/utils/audio_manager.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+
 import 'elf.dart';
 
-class Stone extends SpriteComponent
-    with CollisionCallbacks, HasGameRef<MyGame> {
-  final Random random = Random();
+final _random = Random();
 
-  Stone(Sprite sprite, int? scores) {
-    this.sprite = sprite;
+enum StoneType {
+  small(8.5, x: 72.0, y: 98.0),
+  large(9.7, x: 121.0, y: 164.0);
+
+  const StoneType(
+    this.fallSpeed, {
+    required this.x,
+    required this.y,
+  });
+
+  final double fallSpeed;
+  final double x;
+  final double y;
+}
+
+class Stone extends SpriteComponent //
+    with
+        CollisionCallbacks,
+        HasGameRef<MyGame> {
+  Stone(this.type, {super.sprite}) {
     debugMode = true;
-    size = Vector2(100, 100);
-    position = Vector2(300, -200);
+    anchor = Anchor.center;
+    size = Vector2(type.x, type.y);
     add(RectangleHitbox());
   }
 
+  final StoneType type;
+
   @override
+  Future<void>? onLoad() async {
+    super.onLoad();
+    _resetToRandomPosition();
+  }
+
   @override
   void update(double dt) {
-    // TODO: implement update
     super.update(dt);
-
-    y += 9.7;
-
-    if (y > 680) {
-      y = 0;
-      x = random.nextInt(703) + 330 as double;
+    y += type.fallSpeed;
+    if (y >= gameRef.size.y) {
+      _resetToRandomPosition();
     }
+  }
+
+  void _resetToRandomPosition() {
+    final halfWidth = size.x / 2;
+    position = Vector2(
+      halfWidth + (_random.nextDouble() * (gameRef.size.x - halfWidth)),
+      -size.y,
+    );
   }
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    // TODO: implement onCollision
     super.onCollision(intersectionPoints, other);
     if (other is Elf) {
-      gameRef.playerData.health.value -= 1;
-      x = random.nextInt(703) + 330 as double;
-      y = -200;
-      if (gameRef.playerData.score.value > 0) {
-        gameRef.playerData.score.value -= 1;
-      }
-      gameRef.playerData.size.value -= 10;
-
-      AudioManager.playSfx('hit.mp3');
+      _resetToRandomPosition();
+      other.hitByStone();
     }
   }
 }

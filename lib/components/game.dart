@@ -1,97 +1,99 @@
 import 'dart:math';
+import 'dart:ui';
+
 import 'package:elf_doger/components/gift.dart';
 import 'package:elf_doger/components/stone.dart';
-import 'package:elf_doger/components/stone1.dart';
-import 'package:elf_doger/components/utils/audio_manager.dart';
-import 'package:elf_doger/model/player_data.dart';
+import 'package:elf_doger/utils/audio_manager.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/foundation.dart' show ValueNotifier;
+
 import 'elf.dart';
 
-class MyGame extends FlameGame
+class MyGame extends FlameGame //
     with
         HasKeyboardHandlerComponents,
         HasCollisionDetection,
-        HasGameRef,
         HasTappableComponents {
+  MyGame();
+
+  final random = Random();
+
+  final score = ValueNotifier<int>(0);
+  final health = ValueNotifier<int>(10);
+
+  final _scoreText = TextComponent();
+  final _healthText = TextComponent();
+
   late Elf elf;
 
-  // variables
-  double y = 150;
-
-  // players
-  SpriteComponent player = SpriteComponent();
-  SpriteComponent gift = SpriteComponent();
-  SpriteComponent stone1 = SpriteComponent();
-  TextComponent score = TextComponent();
-  TextComponent healthText = TextComponent();
-  TextComponent tap = TextComponent();
-
-  final Random random = Random();
-
-  // Left left = Left();
-  // Right right = Right();
-
-  final playerData = PlayerData();
-  final Vector2 buttonSize = Vector2(50.0, 50.0);
+  @override
+  Color backgroundColor() => const Color(0x00000000); // transparent
 
   @override
   Future<void> onLoad() async {
-    AudioManager.init();
-    AudioManager.playBgm('synth.mp3', 'never_still.mp3');
     super.onLoad();
-    add(SpriteComponent()
-      ..sprite = await loadSprite('back.jpeg')
-      ..size = size);
-    add(Elf(
-      sprite: await loadSprite('elf.png'),
-      position: Vector2(300, 500),
-      size: Vector2(125, 125),
-    ));
 
-    elf = Elf();
-    //
-    add(Gift(await loadSprite('gift.png')));
-    add(Stone(await loadSprite('stone.png'), playerData.score.value));
+    // Play background music
+    AudioManager.init();
+    AudioManager.playMusic('synth.mp3', 'never_still.mp3');
+
+    // Add background
+    // add(
+    //   SpriteComponent()
+    //     ..sprite = await loadSprite('back.jpeg')
+    //     ..size = size,
+    // );
+
+    // Add player
+    add(elf = Elf(sprite: await loadSprite('elf.png')));
+
+    // Add gift for player to collect
+    add(Gift(sprite: await loadSprite('gift.png')));
+
+    final stoneSprite = await loadSprite('stone.png');
+
+    // Add one small stone
+    add(Stone(StoneType.small, sprite: stoneSprite));
+
+    // Add one large stone
+    add(Stone(StoneType.large, sprite: stoneSprite));
+
+    // Add score display
     add(
-      Stone1(await loadSprite('stone.png')),
+      _scoreText
+        ..size = Vector2(75.5, 75.5)
+        ..position = Vector2(15.0, 26.0),
     );
-    add(score
-      ..size = Vector2(75.5, 75.5)
-      ..position = Vector2(15, 26)
-      ..text = 'Score: ${playerData.score.value}');
-    playerData.score.addListener(() {
-      score.text = 'Score: ${playerData.score.value}';
-    });
-    add(healthText
-      ..size = Vector2(75.5, 75.5)
-      ..position = Vector2(1000, 10)
-      ..text = 'Health: ${playerData.health.value}');
-    playerData.health.addListener(() {
-      healthText.text = 'Health: ${playerData.health.value}';
-    });
-    add(tap
-      ..size = Vector2(75.5, 75.5)
-      ..position = Vector2(500, 500)
-      ..text = 'tap: ${playerData.mobile.value}');
-    playerData.mobile.addListener(() {
-      tap.text = 'tap: ${playerData.mobile.value}';
-      print(playerData.mobile.value.toString());
-    });
+    score.addListener(_updateScoreText);
+    _updateScoreText();
+
+    // Add health display
+    add(
+      _healthText
+        ..size = Vector2(75.5, 75.5)
+        ..position = Vector2(size.x - 26.0, 26.0)
+        ..anchor = Anchor.topRight,
+    );
+    health.addListener(_updateHealthText);
+    _updateHealthText();
+  }
+
+  void _updateHealthText() {
+    _healthText.text = 'Health: ${health.value}';
+  }
+
+  void _updateScoreText() {
+    _scoreText.text = 'Score: ${score.value}';
   }
 
   @override
-  void update(dt) {
+  void update(double dt) {
     super.update(dt);
-    elf.size = Vector2(playerData.size.value, playerData.size.value);
-    healthText.text = 'Health: ${playerData.health.value}';
-    tap.text = 'Health: ${playerData.mobile.value}';
-    if (playerData.health.value == 0) {
-      gameRef.pauseEngineFn;
+    if (health.value == 0) {
+      pauseEngineFn!();
     }
-
-    // for score component
   }
 }
